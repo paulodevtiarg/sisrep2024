@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="base/layout :: comum-header"></head>
+    <body class="sb-nav-fixed">
+        <header th:replace="base/layout :: navbar"></header>
+        
+        <div id="layoutSidenav">
+            <nav th:replace="base/layout :: menu"></nav>
+            
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                        <h1 class="mt-4">Tabela de Preços</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a th:href="@{/home}">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Tabela de Preços</li>
+                        </ol>
+                        
+                        <div class="alert alert-success" role="alert" th:if="${msgOk}">
+                            <p th:text="${msgOk}"></p>
+                        </div>
+                        <div class="alert alert-danger" role="alert" th:if="${msgErro}">
+                            <p th:text="${msgErro}"></p>
+                        </div>
+                        
+                        <div class="card mb-4">
+                            
+                            <div class="card-body">
+                                <a class="btn btn-outline-primary" th:href="@{/tabelaprecos/tabelapreco}">Novo</a>
+                                
+                                <div class="table-responsive" style="margin-top: 30px;">
+                                    <table class="table table-bordered table-striped" id="dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Código</th>
+                                                <th scope="col">Descrição</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Ações</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr th:each="tabelapreco : ${tabelaprecos}">
+                                            <td th:text="${tabelapreco.idTabela}"></td>
+                                            <td th:text="${tabelapreco.descricao}"></td>
+                                            <td th:text="${tabelapreco.inativo ? 'Inativo' : 'Ativo'}"></td>
+                                            <td><a th:href="@{/tabelaprecos/tabelapreco/{id}(id=${tabelapreco.idTabela})}" style="padding-left: 10px"><i class="fa fa-pencil"></i></a>
+                                            <a th:href="@{/tabelaprecos/delete/{id}(id=${tabelapreco.idTabela})}" data-confirm="Tem certeza que deseja excluir o item selecionado?" style="padding-left: 10px" ><i class="fa fa-trash"></i></a></td>
+                                            
+                                        
+                                          </tr>
+                                          
+                                          
+                                        </tbody>
+                                        
+                                        
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!--FINAL CONTAINER-->
+                </main>
+                <footer th:replace="base/layout :: footer"></footer>
+            </div>           
+        </div>
+        
+        <div th:replace="base/layout :: body-scripts"></div>
+    </body>
+</html>

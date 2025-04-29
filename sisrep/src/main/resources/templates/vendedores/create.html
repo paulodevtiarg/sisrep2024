@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="base/layout :: comum-header"></head>
+    <body class="sb-nav-fixed">
+        <header th:replace="base/layout :: navbar"></header>
+        
+        <div id="layoutSidenav">
+            <nav th:replace="base/layout :: menu"></nav>
+            
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                        <h1 class="mt-4">Cadastro de Vendedor</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a th:href="@{/home}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/vendedores}">Vendedores</a></li>
+                            <li class="breadcrumb-item active">Novo</li>
+                        </ol>
+                        
+                        <div class="alert alert-danger" role="alert" th:if="${msgErro}">
+                            <p th:text="${msgErro}"></p>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">Novo Vendedor</div>
+                            <div class="card-body">
+                                <form class="needs-validation" novalidate action="#" th:action="@{/vendedores}" th:object="${vendedor}" method="post">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-3">
+                                            <label for="codigo">Código</label>
+                                            <input type="text" class="form-control" th:field="*{idPessoa}" id="codigo" placeholder="Código" readonly>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="nome">Nome</label>
+                                            <input type="text" class="form-control" th:field="*{nome}" id="nome" placeholder="Nome" autocomplete="off" >
+                                            <span class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" ></span>
+                                        </div>
+                                    </div>     
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group col-md-3">
+                                            <label for="cpf">CPF</label>
+                                            <input type="text" class="form-control" th:field="*{cpf}" id="cpf" placeholder="000.000.000-00" data-mask="000.000.000-00" autocomplete="off">
+                                            <span class="text-danger" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}" ></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="rg">RG</label>
+                                            <input type="text" class="form-control" th:field="*{rg}" id="rg" placeholder="RG">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="usuario">Usuário</label>
+                                            <input type="text" class="form-control" th:field="*{usuario.nome}" id="usuario" readonly>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card">
+                                        <div class="card-header">Endereço</div>
+                                        <div class="card-body">
+                                            <div class="form-row">
+                                                <div class="form-group col-md-5">
+                                                    <label for="logradouro">Logradouro</label>
+                                                    <input type="text" class="form-control" th:field="*{endereco.logradouro}" id="logradouro" placeholder="Logradouro" autocomplete="off">
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <label for="logradouro">Número</label>
+                                                    <input type="text" class="form-control" th:field="*{endereco.numero}" id="numero" placeholder="Número" autocomplete="off">
+                                                </div>
+                                                <div class="form-group col-md-5">
+                                                    <label for="text">Bairro</label>
+                                                    <input type="text" class="form-control" th:field="*{endereco.bairro}" id="bairro" placeholder="Bairro">
+                                                </div>                                                
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">
+                                                    <label for="logradouro">CEP</label>
+                                                    <input type="text" class="form-control" th:field="*{endereco.cep}" id="cep" placeholder="00000-000" data-mask="00000-000" autocomplete="off">
+                                                </div>
+                                                <div class="form-group col-md-8">
+                                                    <label for="complemento">Complemento</label>
+                                                    <input type="text" class="form-control" th:field="*{endereco.complemento}" id="complemento" placeholder="Complemento" autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">
+                                                    <label for="estado">Estado</label>
+                                                    <select id="estado" class="form-control" th:field="*{endereco.municipio.estado}" onchange="findMunicipioByEstado(this.value)" >
+                                                      <option value="0" selected>Escolher...</option>
+                                                      <option th:each="estado : ${estados}" th:value="${estado.idEstado}" th:text="${estado.nome}">...</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="cidade" >Cidade</label>
+                                                    <select id="cidade" class="form-control" th:field="*{endereco.municipio}" >
+                                                      <option th:each="municipio : ${municipios}" th:value="${municipio.idMunicipio}" th:text="${municipio.nome}">...</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="card ">
+                                        <div class="card-header">
+                                            Parametros
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-row">
+                                                <div class="form-group col-md-3">
+                                                    <label for="comissaoPropria">Comissão Cliente Própio</label>
+                                                    <div class="d-flex justify-content-start">
+                                                    <input type="number" class="form-control" th:field="*{comissaoPropria}" id="comissaoPropia">
+                                                    <label for="comissaoPropria">%</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label for="comissaoClienteNaoPropria">Comissão Cliente não própia</label>
+                                                    <div class="d-flex">
+                                                    <input type="number" class="form-control" th:field="*{comissaoClienteNaoPropria}" id="comissaoClienteNaoPropria">
+                                                    <label for="">%</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label for="proximoNumeroPedido">Próximo Número Pedido</label>
+                                                    <input type="number" class="form-control" id="proximoNumeroPedido" th:field="*{proximoNumeroPedido}">
+                                                </div>
+                                            </div>
+                                            <div class="form-row ">
+                                                <div class="form-group form-check col-md-3" style="padding-left: 25px">
+                                                    <input type="checkbox" class="form-check-input" id="vendedorInterno" th:field="*{vendedorInterno}">
+                                                    <label class="form-check-label" for="vendedorInterno">Vendedor Interno</label>
+                                                </div>
+                                                <div class="form-group form-check col-md-3" style="padding-left: 25px">
+                                                    <input type="checkbox" class="form-check-input" id="comissaoApenasFaturamento" th:field="*{comissaoApenasFaturamento}">
+                                                    <label class="form-check-label" for="comissaoApenasFaturamento">Comissão Apenas Faturamento</label>
+                                                </div>
+                                                <div class="form-group form-check col-md-3" style="padding-left: 25px">
+                                                  <input type="checkbox" class="form-check-input" id="inativo" th:field="*{inativo}">
+                                                  <label class="form-check-label" for="inativo">Inativo</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <input type="submit" value="Salvar" class="btn btn-success">
+                                    <a th:href="@{/vendedores}" class="btn btn-light">Cancelar</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer th:replace="base/layout :: footer"></footer>
+            </div>           
+        </div>
+        
+        <div th:replace="base/layout :: body-scripts"></div>
+        <!--<script src="/js/jquery.mask.min.js" type="text/javascript"></script>-->
+        
+    </body>
+</html>

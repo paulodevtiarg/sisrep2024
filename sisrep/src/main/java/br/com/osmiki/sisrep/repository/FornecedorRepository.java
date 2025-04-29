@@ -1,0 +1,24 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package br.com.osmiki.sisrep.repository;
+
+import br.com.osmiki.sisrep.model.Fornecedor;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+/**
+ *
+ * @author Leonardo
+ */
+public interface FornecedorRepository  extends JpaRepository<Fornecedor, Integer>{
+
+    public Fornecedor findByCnpj(String cnpj);
+
+    public Fornecedor findTopByCnpjLikeOrderByCodigoFornecedorDesc(String string);
+
+    public Fornecedor findTopByOrderByCodigoFornecedorDesc();
+    
+
+}

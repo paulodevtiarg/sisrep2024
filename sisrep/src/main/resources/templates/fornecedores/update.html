@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="base/layout :: comum-header"></head>
+    <body class="sb-nav-fixed">
+        <header th:replace="base/layout :: navbar"></header>
+        
+        <div id="layoutSidenav">
+            <nav th:replace="base/layout :: menu"></nav>
+            
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                        <h1 class="mt-4">Cadastro de Representada</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a th:href="@{/home}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/fornecedores}">Representadas</a></li>
+                            <li class="breadcrumb-item active">Atualizar</li>
+                        </ol>
+                        
+                        <div class="alert alert-danger" role="alert" th:if="${msgErro}">
+                            <p th:text="${msgErro}"></p>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">Atualizar Representada</div>
+                            <div class="card-body">
+                                
+                                <form class="needs-validation" novalidate action="#" th:action="@{/fornecedores/{id} (id = ${fornecedor.idFornecedor})}" th:object="${fornecedor}" method="post"  enctype="multipart/form-data">
+                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Representada</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" id="endereco-tab" data-toggle="tab" href="#endereco-front" role="tab" aria-controls="endereco" aria-selected="false">Endereço</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" id="contato-tab" data-toggle="tab" href="#contatos-front" role="tab" aria-controls="contato" aria-selected="false">Contatos</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" id="condicoes-tab" data-toggle="tab" href="#condicoes-front" role="tab" aria-controls="condicoes" aria-selected="false">Condições de Pagamento</a>
+                                    </li>
+                                    </ul>
+                                    <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-3">
+                                            <label for="text">Código</label>
+                                            <input type="text" class="form-control" th:field="*{codigoFornecedor}" id="cnpj" placeholder="000/00"  readonly>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="razao">Razão Social</label>
+                                            <input type="text" class="form-control" th:field="*{razaoSocial}" id="razao" placeholder="Razão Social" required>
+                                            <span class="text-danger" th:if="${#fields.hasErrors('razaoSocial')}" th:errors="*{razaoSocial}"></span>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="nome">Nome Fantasia</label>
+                                            <input type="text" class="form-control" th:field="*{nomeFantasia}" id="nome" placeholder="Nome" autocomplete="off">
+                                            <span class="text-danger" th:if="${#fields.hasErrors('nomeFantasia')}" th:errors="*{nomeFantasia}"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label for="cnpj">CNPJ</label>
+                                            <input type="text" class="form-control" th:field="*{cnpj}" id="cnpj" placeholder="00.000.000/0000-00" data-mask="00.000.000/0000-00" autocomplete="off" >
+                                            <span class="text-danger" th:if="${#fields.hasErrors('cnpj')}" th:errors="*{cnpj}" ></span>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="ie">IE</label>
+                                            <input type="text" class="form-control" th:field="*{ie}" id="ie" placeholder="Inscrição Est." autocomplete="off">
+                                        </div>
+
+                                        <div class="form-group col-md-4">
+                                            <label for="datainicio">Data Inicio</label>
+                                            <input type="date" class="form-control" th:field="*{dataInicio}" id="datainicio" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="contato">Contato</label>
+                                            <input type="text" class="form-control" th:field="*{contato}" id="contato" placeholder="Contato" autocomplete="off">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="text">Email</label>
+                                            <input type="email" class="form-control" th:field="*{email}" id="email" placeholder="nome@email.com">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label for="tipocomissao">Tipo Comissão</label>
+                                            <select id="tipocomissao" class="form-control" th:field="*{tipoComissao}" >
+                                              <option th:each="tipoOpt : ${T(br.com.osmiki.sisrep.enumerador.TipoComissaoEnum).values()}" 
+                                                      th:value="${tipoOpt}" th:text="${tipoOpt.tipo}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="comissao">Comissão</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" th:field="*{comissao}" id="comissao">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="antescomissao">Descontar Frente p/ calculo comissão</label>
+                                            <input type="number" class="form-control" th:field="*{descontarFreteAntesComissao}" id="antescomissao">
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <div class="form-group form-check">
+                                      <input type="checkbox" class="form-check-input" id="comissaoporproduto">
+                                      <label class="form-check-label" for="comissaoporproduto" th:value="*{comissaoPorProduto}">Calcular comissão por produto</label>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="">Desconto Padrão</label>
+                                        <div class="form-row">
+                                            <div class="col-auto">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" th:field="*{desconto1}" id="desconto1">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>+
+                                            <div class="col-auto">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" th:field="*{desconto2}" id="desconto2">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>+
+                                            <div class="col-auto">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" th:field="*{desconto3}" id="desconto3">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>+
+                                            <div class="col-auto">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" th:field="*{desconto4}" id="desconto4">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>+
+                                            <div class="col-auto">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" th:field="*{desconto5}" id="desconto5">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>+
+                                            <div class="col-auto">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" th:field="*{desconto6}" id="desconto6">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    
+                                    
+                                        <div class="form-check col-md-6">
+                                          <input type="checkbox" class="form-check-input" th:field="*{inativo}">
+                                          <label class="form-check-label" for="inativo">Inativo</label>
+                                        </div>
+                                        <div class="form-check col-md-6">
+                                          <input type="checkbox" class="form-check-input" th:field="*{pertenceGrupo}">
+                                          <label class="form-check-label" for="pertenceGrupo" >Pertence ao Grupo</label>
+                                        </div>
+                                        <div class="form-check col-md-6">
+                                          <input type="checkbox" class="form-check-input" th:field="*{obrigadoCorPedido}">
+                                          <label class="form-check-label" for="obrigadoCorPedido">Obrigatório Informar cor no Pedido</label>
+                                        </div>
+                                        <div class="form-check col-md-6">
+                                          <input type="checkbox" class="form-check-input" th:field="*{mostrarMaisDeUmDescontoItemPedido}">
+                                          <label class="form-check-label" for="mostrarMaisDeUmDescontoItemPedido">Mostrar Mais De Um Desconto no Item do Pedido</label>
+                                        </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group col-md-10">
+                                            <label for="contas">Contas Bancárias</label>
+                                            <textarea class="form-control" th:field="*{contaBancaria}" id="contas"></textarea>
+                                        </div>  
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="form-group col-md-10">
+                                            <label for="logo">Logomarca</label>
+                                            <img th:src="@{'data:image/jpeg;base64,'+${fornecedor.generateBase64Image()}}" alt="" id="logoView"/>
+                                            <div clas="row">
+                                                <input hidden class="form-control form-control-lg" id="imageInput" type="file" name="logomarca" accept="image/*">
+                                                <button type="button" class="btn btn-primary" id="uploadButton">Adicionar</button>
+                                                <button type="button" class="btn btn-secondary" onclick="removerImagem()">Remover</button>
+                                                <div class="preview" id="imagePreview"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    
+                                <div class="tab-pane fade" id="endereco-front" role="tabpanel" aria-labelledby="endereco-tab">
+                                
+                                    <div class="card">
+                                        <div class="card-header">Endereço</div>
+                                        <div class="card-body">
+                                            <input type="hidden" th:field="*{endereco.idEndereco}">
+                                            <div class="form-row">
+                                                <div class="form-group col-md-5">
+                                                    <label for="logradouro">Logradouro</label>
+                                                    <input type="text" class="form-control" th:field="*{endereco.logradouro}" id="logradouro" placeholder="Logradouro" autocomplete="off">
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <label for="logradouro">Número</label>
+                                                    <input type="text" class="form-control" th:field="*{endereco.numero}" id="numero" placeholder="Número" autocomplete="off">
+                                                </div>
+                                                <div class="form-group col-md-5">
+                                                    <label for="text">Bairro</label>
+                                                    <input type="text" class="form-control" th:field="*{endereco.bairro}" id="bairro" placeholder="Bairro">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">
+                                                    <label for="logradouro">CEP</label>
+                                                    <input type="text" class="form-control" th:field="*{endereco.cep}" id="cep" placeholder="00000-000" data-mask="00000-000" autocomplete="off">
+                                                </div>
+                                                <div class="form-group col-md-8">
+                                                    <label for="complemento">Complemento</label>
+                                                    <input type="text" class="form-control" th:field="*{endereco.complemento}" id="complemento" placeholder="Complemento" autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">
+                                                    <label for="estado">Estado</label>
+                                                    <select id="estado" class="form-control" th:field="*{endereco.municipio.estado}" onchange="findMunicipioByEstado(this.value)" >
+                                                      <option value="0" selected>Escolher...</option>
+                                                      <option th:each="estado : ${estados}" th:value="${estado.idEstado}" th:text="${estado.nome}">...</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="cidade" >Cidade</label>
+                                                    <select id="cidade" class="form-control" th:field="*{endereco.municipio}" >
+                                                      <option th:each="municipio : ${municipios}" th:value="${municipio.idMunicipio}" th:text="${municipio.nome}">...</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div class="tab-pane fade" id="contatos-front" role="tabpanel" aria-labelledby="contato-tab">
+                                        <div class="card">
+                                        <div class="card-header">Telefone</div>
+                                        <div class="card-body">
+                                            
+                                            <div id="telefones">
+                                                <!-- Iteração sobre os telefones existentes -->
+                                                <div th:each="telefone, stat : *{telefones}" data-index="__${stat.index}__">
+                                                    <input type="hidden" th:field="*{telefones[__${stat.index}__].idTelefone}">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-3">
+                                                            <label for="tipotelefone">Tipo Telefone</label>
+                                                            <select id="tipotelefone" class="form-control" th:field="*{telefones[__${stat.index}__].tipoTelefone}" >
+                                                                <option th:each="tipoOpt : ${T(br.com.osmiki.sisrep.enumerador.TipoTelefoneEnum).values()}" 
+                                                                        th:value="${tipoOpt}" th:text="${tipoOpt.desc}"></option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            <label for="numerotelefone">Número</label>
+                                                            <div class="form-row align-items-left">
+                                                                <input type="text" class="form-control col-md-3" th:field="*{telefones[__${stat.index}__].ddd}" id="ddd" placeholder="DDD" data-mask="00" autocomplete="off" >
+                                                                <input type="text" class="form-control col-md-8" th:field="*{telefones[__${stat.index}__].numero}" id="numerotelefone" placeholder="0000-0000" data-mask="0000-0000" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            <label for="obsnumero">Observação</label>
+                                                            <div class="row g-2">
+                                                                <input type="text" class="form-control col-sm" th:field="*{telefones[__${stat.index}__].obs}" id="obsnumero" autocomplete="off" >
+                                                                <button type="button" class="btn btn-secondary btn-sm" onclick="removerTelefone(this)">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <button type="button" onclick="adicionarTelefone()" class="btn btn-primary">Adicionar Telefone</button>
+                                            
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="condicoes-front" role="tabpanel" aria-labelledby="condicoes-tab">
+                                        <div class="card">
+                                        <div class="card-header">Condições de Pagamento</div>
+                                        <div class="card-body">
+                                            <div id="condicoes">
+                                                <!-- Iteração sobre as condiçoes de pagamento existentes -->
+                                                <div th:each="condicoes, stat : *{condicoesPagamento}" data-index="__${stat.index}__">
+                                                    <div class="row mb-3 g-3 align-items-center">
+                                                        <input type="hidden" th:field="*{condicoesPagamento[__${stat.index}__].idCondicoesPagamento}">
+                                                        <label class="col-sm-2 col-form-label">Descrição:</label>
+                                                        <input type="text" class="form-control col-md-8" th:field="*{condicoesPagamento[__${stat.index}__].nome}">
+                                                        <button type="button" class="btn btn-secondary btn-sm col-auto" onclick="removerCondicoes(this)">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <button type="button" onclick="adicionarCondicoesPgto()" class="btn btn-primary">Adicionar Condição de Pagamento</button>
+                                            
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    
+                                    
+                                    <input type="submit" th:value="${fornecedor.idFornecedor == null}? 'Salvar': 'Atualizar'" class="btn btn-success">
+                                    <a th:href="@{/fornecedores}" class="btn btn-light">Cancelar</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </main>
+                <footer th:replace="base/layout :: footer"></footer>
+            </div>           
+        </div>
+        
+        <div th:replace="base/layout :: body-scripts"></div>
+        <!--<script src="/js/jquery.mask.min.js" type="text/javascript"></script>-->
+        
+
+        <script>
+            const uploadButton = document.getElementById('uploadButton');
+            const imageInput = document.getElementById('imageInput');
+            const imagePreview = document.getElementById('imagePreview');
+            const logoView = document.getElementById('logoView');
+
+            uploadButton.addEventListener('click', function() {
+                imageInput.click();
+            });
+
+            imageInput.addEventListener('change', function(event) {
+                const files = event.target.files;
+                imagePreview.innerHTML = ''; // Limpa as pré-visualizações anteriores
+
+                Array.from(files).forEach(file => {
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            imagePreview.appendChild(img);
+                        };
+
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert('O arquivo "' + file.name + '" não é uma imagem válida.');
+                    }
+                });
+            });  
+            
+            function removerImagem(){
+                imagePreview.innerHTML = '';
+                imageInput.value = null;
+                logoView.hidden = true;
+            }
+        </script>
+    </body>
+</html>

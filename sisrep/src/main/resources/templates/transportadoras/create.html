@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="base/layout :: comum-header"></head>
+    <body class="sb-nav-fixed">
+        <header th:replace="base/layout :: navbar"></header>
+        
+        <div id="layoutSidenav">
+            <nav th:replace="base/layout :: menu"></nav>
+            
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                        <h1 class="mt-4">Cadastro de Transportadora</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a th:href="@{/home}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/transportadoras}">Transportadoras</a></li>
+                            <li class="breadcrumb-item active">Novo</li>
+                        </ol>
+                        
+                        <div class="alert alert-danger" role="alert" th:if="${msgErro}">
+                            <p th:text="${msgErro}"></p>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">Nova Transportadora</div>
+                            <div class="card-body">
+                                <form class="needs-validation" novalidate action="#" th:action="@{/transportadoras}" th:object="${transportadora}" method="post">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="nome">Nome</label>
+                                            <input type="text" class="form-control" th:field="*{nome}" id="nome" placeholder="Nome" required>
+                                            <span class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="text">CNPJ</label>
+                                            <input type="text" class="form-control" th:field="*{cnpj}" id="cnpj" placeholder="00.000.000/0000-00" data-mask="00.000.000/0000-00" autocomplete="off" >
+                                            <span class="text-danger" th:if="${#fields.hasErrors('cnpj')}" th:errors="*{cnpj}" ></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="text">Código</label>
+                                            <input type="text" class="form-control" th:field="*{codigo}" id="cnpj" placeholder="000/00"  readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="text">Email</label>
+                                            <input type="email" class="form-control" th:field="*{email}" id="email" placeholder="nome@email.com">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="text">Contato</label>
+                                            <input type="text" class="form-control" id="contato" placeholder="Nome" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">Endereço</div>
+                                        <div class="card-body">
+                                            <div class="form-row">
+                                                <div class="form-group col-md-5">
+                                                    <label for="logradouro">Logradouro</label>
+                                                    <input type="text" class="form-control" th:field="*{endereco.logradouro}" id="logradouro" placeholder="Logradouro" autocomplete="off">
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <label for="logradouro">Número</label>
+                                                    <input type="text" class="form-control" th:field="*{endereco.numero}" id="numero" placeholder="Número" autocomplete="off">
+                                                </div>
+                                                <div class="form-group col-md-5">
+                                                    <label for="text">Bairro</label>
+                                                    <input type="text" class="form-control" th:field="*{endereco.bairro}" id="bairro" placeholder="Bairro">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">
+                                                    <label for="logradouro">CEP</label>
+                                                    <input type="text" class="form-control" th:field="*{endereco.cep}" id="cep" placeholder="00000-000" data-mask="00000-000" autocomplete="off">
+                                                </div>
+                                                <div class="form-group col-md-8">
+                                                    <label for="complemento">Complemento</label>
+                                                    <input type="text" class="form-control" th:field="*{endereco.complemento}" id="complemento" placeholder="Complemento" autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">
+                                                    <label for="estado">Estado</label>
+                                                    <select id="estado" class="form-control" th:field="*{endereco.municipio.estado}" onchange="findMunicipioByEstado(this.value)" >
+                                                      <option value="0" selected>Escolher...</option>
+                                                      <option th:each="estado : ${estados}" th:value="${estado.idEstado}" th:text="${estado.nome}">...</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="cidade" >Cidade</label>
+                                                    <select id="cidade" class="form-control" th:field="*{endereco.municipio}" >
+                                                      <option th:each="municipio : ${municipios}" th:value="${municipui.idMunicipio}" th:text="${municipio.nome}">...</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4"><label for="valorPeso">Valor Por Peso</label><input type="number" class="form-control" th:field="*{valorPeso}" id="valoPeso"></div>
+                                        <div class="form-group col-md-4"><label for="valorPorcentagem">Valor Por Porcentagem</label><input type="number" class="form-control" th:field="*{valorPorcentagem}" id="valorPorcentagem"></div>
+                                        <div class="form-group col-md-4">
+                                            <label for="calculo">Calcular Frete Sobre o Valor</label>
+                                            <select id="calculo" class="form-control" th:field="*{calcularFreteSobreValorSemIpi}" >
+                                                <option th:value="0" selected>Com IPI</option>
+                                                <option th:value="1">Sem IPI</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    
+                                    <div class="form-group form-check">
+                                      <input type="checkbox" class="form-check-input" id="inativo">
+                                      <label class="form-check-label" for="inativo" th:value="*{inativo}">Inativo</label>
+                                    </div>
+                                    
+                                    <input type="submit" value="Salvar" class="btn btn-success">
+                                    <a th:href="@{/transportadoras}" class="btn btn-light">Cancelar</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer th:replace="base/layout :: footer"></footer>
+            </div>           
+        </div>
+        
+        <div th:replace="base/layout :: body-scripts"></div>
+        <!--<script src="/js/jquery.mask.min.js" type="text/javascript"></script>-->
+        
+    </body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="base/layout :: comum-header"></head>
+    <body class="sb-nav-fixed">
+        <header th:replace="base/layout :: navbar"></header>
+        
+        <div id="layoutSidenav">
+            <nav th:replace="base/layout :: menu"></nav>
+            
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                        <h1 class="mt-4">Dashboard</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                        <div>TODO write content</div>
+                    </div>
+                </main>
+                <footer th:replace="base/layout :: footer"></footer>
+            </div>           
+        </div>
+        
+        <div th:replace="base/layout :: body-scripts"></div>
+    </body>
+</html>
