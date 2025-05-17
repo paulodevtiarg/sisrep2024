@@ -59,7 +59,7 @@ public class UsuarioController {
 	        
 	        model.addAttribute("usuarios", pageResult.getContent());
 	        model.addAttribute("currentPage", page);
-	        model.addAttribute("pageSize", size); // tamanho atual
+	        model.addAttribute("pageSize", size);
 	        model.addAttribute("totalPages", pageResult.getTotalPages());
 	        model.addAttribute("pageSizes", List.of(5, 10, 20, 25));
 	        model.addAttribute("nome", nome);
@@ -67,15 +67,16 @@ public class UsuarioController {
 	        model.addAttribute("ativo", ativo);
 	        model.addAttribute("sortField", sortField);
 	        model.addAttribute("sortDirection", sortDirection);
+	        model.addAttribute("pageResult", pageResult); // Adiciona o objeto pageResult completo
 	        
 	        return "usuarios/index";
 	    }
 	 // Rota alternativa para obter todos sem paginação (se necessário)
-	    @GetMapping("/todos")
-	    @ResponseBody
-	    public List<UsuarioDTO> listAllUsuarios() {
-	        return usuarioService.findAll();
-	    }
+	 //   @GetMapping("/todos")
+	//    @ResponseBody
+	//    public List<UsuarioDTO> listAllUsuarios() {
+	//        return usuarioService.findAll();
+	//    }
     
     @GetMapping("/usuario")
     public String showForm(Model model){

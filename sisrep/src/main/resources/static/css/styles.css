@@ -10228,3 +10228,36 @@ body {
 .pr-table-dark{
 	background-color:#13293d !important;
 }
+
+.table-dark{
+	--bs-table-bg:#215c85 !important;
+}
+
+.pr-th-borda-suave {
+   border-right: 1px solid rgba(28, 28, 37, 0.5) !important;
+  
+   }
+   
+/* Paginação responsiva */
+@media (max-width: 768px) {
+    .card-footer {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* Estilo ativo para página atual */
+.page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.page-link {
+    color: #0d6efd;
+}
+   
