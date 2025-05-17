@@ -74,6 +74,7 @@ public class Usuario implements Serializable {
     private Boolean gerenteFornecedor;
     @Column(name = "cliente")
     private Boolean cliente;
+    @Column(name = "data_alteracao_senha")
     private LocalDateTime dataAlteracaoSenha;
 
     public Usuario() {

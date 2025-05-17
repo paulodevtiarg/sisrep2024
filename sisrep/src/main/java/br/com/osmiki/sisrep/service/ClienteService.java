@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Leonardo
  */
 @RestController
-//@RequestMapping("/clientes")
 public class ClienteService {
     
     private ClienteRepository repository;

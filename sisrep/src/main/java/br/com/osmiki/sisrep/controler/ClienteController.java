@@ -49,13 +49,13 @@ public class ClienteController {
         this.municipioService = municipioService;
         this.regiaoService = regiaoService;
     }
-    
+    // Rota: GET /clientes
     @GetMapping
     public String findAll(Model model){
         model.addAttribute("clientes", service.findAll());
         return "clientes/index";
     }
-    
+    //Rota: GET /clientes/cliente
     @GetMapping("/cliente")
     public String showForm(Model model){
         Cliente cliente = new Cliente();
@@ -96,7 +96,7 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.OK)
         .body("CLIENTE SALVO COM SUCESSO!");
     }
-    
+    //Rota: GET /clientes/cliente/{id}
     @GetMapping("/cliente/{id}")
     public String showForm(@PathVariable("id") Integer id, Model model){
         ResponseEntity u = service.findById(id);

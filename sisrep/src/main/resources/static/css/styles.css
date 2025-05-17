@@ -10212,3 +10212,19 @@ body {
 .sb-sidenav-light .sb-sidenav-footer {
   background-color: #e9ecef;
 }
+/*Estilização PAULO*/
+.breadcrumb {
+  background-color: transparent;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+.pr-custom-text {
+  color: #284b63 !important;
+   opacity: 0.75 !important; /* Equivalente a opacity-70 do Bootstrap */
+}
+
+.pr-table-dark{
+	background-color:#13293d !important;
+}
