@@ -123,7 +123,18 @@ and open the template in the editor.
             
         </div> <!-- FIM layoutSidenav  -->
             
-        
+        <div class="col-12" id="messageria" th:fragment = "mensageria">
+        	
+                    			<!-- Mensageria -->
+								<div class="alert alert-success" role="alert" th:if="${msgOk}">
+									<p th:text="${msgOk}"></p>
+								</div>
+								<div class="alert alert-danger" role="alert" th:if="${msgErro}">
+									<p th:text="${msgErro}"></p>
+								</div>
+                    		
+                    		
+        </div>
         <!--<nav class="col-2 bg-light sidebar" th:fragment = "menu">
             <ul class="nav flex-column">
                 <li class="nav-item">
@@ -170,6 +181,8 @@ and open the template in the editor.
         </footer>
         
         <div  th:fragment = "body-scripts">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
             <!-- Bootstrap core JavaScript
             ================================================== -->
             <!-- Placed at the end of the document so the pages load faster -->
@@ -179,7 +192,11 @@ and open the template in the editor.
             <script src="/assets/demo/chart-area-demo.js" type="text/javascript"></script>
             <script src="/assets/demo/chart-bar-demo.js"></script>-->
               <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-           
+            <script>
+				    $(document).ready(function(){
+				        $('#cpf').mask('000.000.000-00');
+				    });
+			</script>
         </div>
     </body>
 </html>

@@ -5,87 +5,157 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="base/layout :: comum-header"></head>
-    <body class="sb-nav-fixed">
-        <header th:replace="base/layout :: navbar"></header>
-        
-        <div id="layoutSidenav">
-            <nav th:replace="base/layout :: menu"></nav>
-            
-            <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid">
-                        <h1 class="mt-4">Cadastro de Usuário</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a th:href="@{/home}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a th:href="@{/usuarios}">Usuários</a></li>
-                            <li class="breadcrumb-item active">Novo</li>
-                        </ol>
-                        
-                        <div class="alert alert-danger" role="alert" th:if="${msgErro}">
-                            <p th:text="${msgErro}"></p>
-                        </div>
-                        
-                        <div class="card">
-                            <div class="card-header">Novo Usuário</div>
-                            <div class="card-body">
-                                <form class="needs-validation" novalidate action="#" th:action="@{/usuarios}" th:object="${usuario}" method="post">
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="nome">Nome</label>
-                                            <input type="text" class="form-control" th:field="*{nome}" id="nome" placeholder="Nome" required>
-                                            <span class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="text">CPF</label>
-                                            <input type="text" class="form-control" th:field="*{cpf}" id="cpf" placeholder="000.000.000-00" data-mask="000.000.000-00" autocomplete="off" >
-                                            <span class="text-danger" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}" ></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="text">Senha</label>
-                                            <input type="password" class="form-control" th:field="*{senha}" id="senha" placeholder="Senha">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="text">Confirmar Senha</label>
-                                            <input type="password" class="form-control" id="confirmarSenha" placeholder="Senha" autocomplete="off">
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="email">Email</label>
-                                            <input type="text" class="form-control" th:field="*{email}" id="email" placeholder="Email" autocomplete="off">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="text">Senha Email</label>
-                                            <input type="password" class="form-control" th:value="*{emailSenha}" id="emailSenha" placeholder="Senha Email">
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-4"><label for="proximoNumeroAssistencia">Proximo Nº Assistência</label><input type="number" class="form-control" th:field="*{proximoNumeroAssistencia}" id="proximoNumeroAssistencia"></div>
-                                        <div class="form-group col-md-4"><label for="proximoNumeroInadimplenciaCliente">Proximo Nº Inadimplência Cliente</label><input type="number" class="form-control" th:field="*{proximoNumeroInadimplenciaCliente}" id="proximoNumeroInadimplenciaCliente"></div>
-                                        <div class="form-group col-md-4"><label for="proximoNumeroContasPagar">Proximo Nº Contas Pagar</label><input type="number" class="form-control" th:field="*{proximoNumeroContasPagar}" id="proximoNumeroContasPagar"></div>
-                                    </div>
-                                    
-                                    <div class="form-group form-check">
-                                      <input type="checkbox" class="form-check-input" id="inativo">
-                                      <label class="form-check-label" for="inativo" th:value="*{inativo}">Inativo</label>
-                                    </div>
-                                    
-                                    <input type="submit" value="Salvar" class="btn btn-success">
-                                    <a th:href="@{/usuarios}" class="btn btn-light">Cancelar</a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-                <footer th:replace="base/layout :: footer"></footer>
-            </div>           
-        </div>
-        
-        <div th:replace="base/layout :: body-scripts"></div>
-        <!--<script src="/js/jquery.mask.min.js" type="text/javascript"></script>-->
-        
-    </body>
+<head th:replace="base/layout :: comum-header"></head>
+<body class="sb-nav-fixed">
+	<header th:replace="base/layout :: navbar"></header>
+
+	<div id="layoutSidenav">
+		<nav th:replace="base/layout :: menu"></nav>
+
+		<div id="layoutSidenav_content">
+			<div class="container-fluid p-2">
+				<div class="row">
+					<div class="col-12">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a th:href="@{/home}"><i
+										class="fa-duotone fa-solid fa-house"></i> Dashboard</a></li>
+								<li class="breadcrumb-item"><a th:href="@{/usuarios}">
+										<i class="fa-duotone fa-solid fa-user"></i> Usuários
+								</a></li>
+								<li class="breadcrumb-item active">Novo Usuário</li>
+							</ol>
+						</nav>
+					</div>
+
+					<div class="col-12">
+						<form class="needs-validation" novalidate action="#"
+							th:action="@{/usuarios}" th:object="${usuario}" method="post">
+							<input type="hidden" name="_inativo" value="on" />
+							<div class="card">
+								<div
+									class="card-header card-header d-flex justify-content-between align-items-center fs-4 pr-custom-text  fw-semibold text-uppercase">
+									Novo Usuário <a th:href="@{/usuarios}"
+										class="btn btn-outline-secondary"> <i
+										class="fa-duotone fa-solid fa-ban"></i> Cancelar
+									</a>
+								</div>
+								<div class="card-body">
+
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label for="nome">Nome*</label> <input type="text"
+												class="form-control" th:field="*{nome}" id="nome"
+												placeholder="Nome" required> <span
+												class="text-danger" th:if="${#fields.hasErrors('nome')}"
+												th:errors="*{nome}"></span>
+										</div>
+										<div class="form-group col-md-6">
+											<label for="text">CPF*</label> <input
+												pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
+												title="Digite um CPF no formato: 000.000.000-00" type="text"
+												class="form-control" th:field="*{cpf}" id="cpf"
+												placeholder="000.000.000-00" data-mask="000.000.000-00"
+												autocomplete="off"> <span class="text-danger"
+												th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></span>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label for="text">Senha*</label> <input type="password"
+												class="form-control" th:field="*{senha}" id="senha"
+												placeholder="Senha"> <span class="text-danger"
+												th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></span>
+										</div>
+										<div class="form-group col-md-6">
+											<label for="text">Confirmar Senha</label> <input
+												type="password" class="form-control" id="confirmarSenha"
+												placeholder="Senha" autocomplete="off">
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label for="email">Email</label> <input type="text"
+												class="form-control" th:field="*{email}" id="email"
+												placeholder="Email" autocomplete="off"> <span
+												class="text-danger" th:if="${#fields.hasErrors('email')}"
+												th:errors="*{email}"></span>
+										</div>
+										<div class="form-group col-md-6">
+											<label for="text">Senha Email</label> <input type="password"
+												class="form-control" th:value="*{emailSenha}"
+												id="emailSenha" placeholder="Senha Email">
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-md-4">
+											<label for="proximoNumeroAssistencia">Proximo Nº
+												Assistência</label><input type="number" class="form-control"
+												th:field="*{proximoNumeroAssistencia}"
+												id="proximoNumeroAssistencia">
+										</div>
+										<div class="form-group col-md-4">
+											<label for="proximoNumeroInadimplenciaCliente">Proximo
+												Nº Inadimplência Cliente</label><input type="number"
+												class="form-control"
+												th:field="*{proximoNumeroInadimplenciaCliente}"
+												id="proximoNumeroInadimplenciaCliente">
+										</div>
+										<div class="form-group col-md-4">
+											<label for="proximoNumeroContasPagar">Proximo Nº
+												Contas Pagar</label><input type="number" class="form-control"
+												th:field="*{proximoNumeroContasPagar}"
+												id="proximoNumeroContasPagar">
+										</div>
+									</div>
+
+									<div class="form-group form-check">
+										<input type="checkbox" class="form-check-input" id="inativo"
+											th:field="*{inativo}">
+											<label	class="form-check-label" for="inativo">Inativo</label>
+									</div>
+
+
+								</div>
+								<div class="col-12 border-bottom pb-3 mb-3"></div>
+								<div
+									class="card-footer d-flex justify-content-between align-items-center">
+									<button type="submit" class="btn btn-outline-primary">
+										<i class="fa-duotone fa-solid fa-floppy-disk"></i> SALVAR
+									</button>
+
+								</div>
+
+							</div>
+						</form>
+
+					</div>
+
+
+
+				</div>
+
+
+			</div>
+
+			<div th:replace="base/layout :: body-scripts"></div>
+
+
+
+
+
+
+
+
+
+
+
+			<footer th:replace="base/layout :: footer"></footer>
+		</div>
+	</div>
+
+	<div th:replace="base/layout :: body-scripts"></div>
+
+
+</body>
 </html>

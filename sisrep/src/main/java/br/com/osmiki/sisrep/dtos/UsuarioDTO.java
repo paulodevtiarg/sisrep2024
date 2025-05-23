@@ -12,22 +12,26 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class UsuarioDTO {
-	
-	
+		
 	
 	@Column(name = "id_pessoa")
     private Integer idPessoa;
+	
     @Basic(optional = false)
     @NotNull
     @NotBlank(message = "Nome obrigatório")
     @Column(name = "nome")
     private String nome;
+    
     @Basic(optional = false)
     @NotNull
     @NotBlank(message = "CPF Obrigatório")
     @Column(name = "cpf")
     private String cpf;
+    
     @Basic(optional = false)
+    @NotNull
+    @NotBlank(message = "Senha Obrigatória")
     @Column(name = "senha")
     private String senha;
     @Basic(optional = false)
@@ -48,8 +52,11 @@ public class UsuarioDTO {
     @NotNull
     @Column(name = "proximo_numero_contas_pagar")
     private int proximoNumeroContasPagar;
+    
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 50)
+    @NotNull
+    @NotBlank(message = "E-Mail Obrigatório")
     @Column(name = "email")
     private String email;
     @Size(max = 20)

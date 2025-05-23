@@ -5,6 +5,7 @@
  */
 package br.com.osmiki.sisrep.controler;
 
+import br.com.osmiki.sisrep.converter.UsuarioConverter;
 import br.com.osmiki.sisrep.dtos.UsuarioDTO;
 import br.com.osmiki.sisrep.model.Usuario;
 import br.com.osmiki.sisrep.service.UsuarioService;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,21 +49,24 @@ public class UsuarioController {
 	    public String listUsuarios(
 	            @RequestParam(defaultValue = "0") int page,
 	            @RequestParam(defaultValue = "10") int size,
+	            @RequestParam(required = false) Integer idPessoa,  // Adicione esta linha
 	            @RequestParam(required = false) String nome,
 	            @RequestParam(required = false) String email,
 	            @RequestParam(required = false) Boolean ativo,
-	            @RequestParam(defaultValue = "nome") String sortField,
+	            @RequestParam(defaultValue = "idPessoa") String sortField,
 	            @RequestParam(defaultValue = "asc") String sortDirection,
 	            Model model) {
 	        
-	        Page<UsuarioDTO> pageResult = usuarioService.findPaginated(
-	            page, size, nome, email, ativo, sortField, sortDirection);
+	       
+			Page<UsuarioDTO> pageResult = usuarioService.findPaginated(
+	            page, size, idPessoa, nome, email, ativo, sortField, sortDirection);
 	        
 	        model.addAttribute("usuarios", pageResult.getContent());
 	        model.addAttribute("currentPage", page);
 	        model.addAttribute("pageSize", size);
 	        model.addAttribute("totalPages", pageResult.getTotalPages());
 	        model.addAttribute("pageSizes", List.of(5, 10, 20, 25));
+	        model.addAttribute("idPessoa", idPessoa);
 	        model.addAttribute("nome", nome);
 	        model.addAttribute("email", email);
 	        model.addAttribute("ativo", ativo);
@@ -77,36 +82,45 @@ public class UsuarioController {
 	//    public List<UsuarioDTO> listAllUsuarios() {
 	//        return usuarioService.findAll();
 	//    }
-    
+   
     @GetMapping("/usuario")
     public String showForm(Model model){
-        Usuario usuario = new Usuario();
-        model.addAttribute(usuario);
+        UsuarioDTO usuario = new UsuarioDTO();
+        model.addAttribute("usuario", usuario); // Note o nome explícito "usuario"
         return "usuarios/create";
-    }
+    } 
     
     //Criando um novo usuario (POST /usuarios)
     @PostMapping
-    public String addUser(@Valid Usuario usuario, BindingResult result, Model model) {
+    public String addUser(@Valid @ModelAttribute("usuario") UsuarioDTO usuarioDTO, BindingResult result, Model model) {
         if (result.hasErrors()) {
             String msgErro = "";
             for (ObjectError error : result.getAllErrors()) {
                 msgErro = msgErro+error.getDefaultMessage()+System.lineSeparator(); 
             }
-            model.addAttribute("msgErro", msgErro);
+          
             System.out.println("ERRO!!!!!!!!");
             return "usuarios/create";
         }
         try {
-        	usuarioService.create(usuario);
-            model.addAttribute("msgOk", "Usuário registrado.");
+        	 // Converter DTO para Entity usando o conversor estático
+            Usuario usuario = UsuarioConverter.toEntity(usuarioDTO);
+            
+            // Salvar o usuário convertido
+            usuarioService.create(usuario);
+            
+            model.addAttribute("msgOk", "Usuário registrado com sucesso!");
+            
+            
+                       
         } catch (Exception e) {
             String msgErro = e.getCause().getMessage();
             model.addAttribute("msgErro", msgErro);
             return "usuarios/create";
         }
-        model.addAttribute("usuarios", usuarioService.findAll());
-        return "usuarios/index";
+      //model.addAttribute("usuarios", usuarioService.findAll());
+     // Redireciona para a listagem com parâmetros padrão
+        return "redirect:/usuarios?page=0&size=10&sortField=nome&sortDirection=asc";
     }
     
     @GetMapping("/usuario/{id}")

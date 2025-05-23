@@ -11,6 +11,7 @@ import br.com.osmiki.sisrep.model.Usuario;
 import br.com.osmiki.sisrep.repository.UsuarioRepository;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,13 +65,18 @@ public class UsuarioService {
     public Page<UsuarioDTO> findPaginated(
             int page, 
             int size, 
+            Integer idPessoa,
             String nome, 
             String email, 
             Boolean ativo, 
             String sortField, 
             String sortDirection) {
         
-        // Configuração de ordenação
+    	// Verifica se o sortField é válido
+        if(!Arrays.asList("idPessoa", "nome", "email").contains(sortField)) {
+            sortField = "idPessoa"; // Fallback para idPessoa se campo inválido
+        }
+        
         Sort sort = sortDirection.equalsIgnoreCase("desc") 
             ? Sort.by(sortField).descending() 
             : Sort.by(sortField).ascending();

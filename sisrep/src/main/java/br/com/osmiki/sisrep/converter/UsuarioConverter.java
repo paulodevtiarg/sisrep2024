@@ -33,7 +33,27 @@ public class  UsuarioConverter {
 	        dto.setDataAlteracaoSenha(usuario.getDataAlteracaoSenha());
 	        return dto;
 	    }
-
+	    
+	    public static Usuario toEntity(UsuarioDTO usuarioDTO) {
+	    	Usuario usuario = new Usuario();
+	        usuario.setIdPessoa(usuarioDTO.getIdPessoa());
+	        usuario.setNome(usuarioDTO.getNome());
+	        usuario.setCpf(usuarioDTO.getCpf());
+	        usuario.setSenha(usuarioDTO.getSenha());
+	        usuario.setInativo(usuarioDTO.isInativo());
+	        usuario.setProximoNumeroAssistencia(usuarioDTO.getProximoNumeroAssistencia());
+	        usuario.setProximoNumeroInadimplenciaCliente(usuarioDTO.getProximoNumeroInadimplenciaCliente());
+	        usuario.setDataAlteracao(usuarioDTO.getDataAlteracao());
+	        usuario.setProximoNumeroContasPagar(usuarioDTO.getProximoNumeroContasPagar());
+	        usuario.setEmail(usuarioDTO.getEmail());
+	        usuario.setEmailSenha(usuarioDTO.getEmailSenha());
+	        usuario.setGerenteFornecedor(usuarioDTO.getGerenteFornecedor());
+	        usuario.setCliente(usuarioDTO.getCliente());
+	        usuario.setDataAlteracaoSenha(usuarioDTO.getDataAlteracaoSenha());
+	        return usuario;
+	    	
+	    	
+	    }
 	    // Opcional: Conversão em massa (List/Page)
 	    public static List<UsuarioDTO> toDTOList(List<Usuario> usuarios) {
 	        return usuarios.stream()
