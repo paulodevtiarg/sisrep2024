@@ -157,7 +157,7 @@ public class UsuarioService {
     }
     
     //@RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ResponseEntity getUsuario(@RequestBody Usuario usuario){
+   /* public ResponseEntity getUsuario(@RequestBody Usuario usuario){
         String cpf, senha;
         cpf = usuario.getCpf();
         senha = usuario.getSenha();
@@ -174,7 +174,7 @@ public class UsuarioService {
 //        }
 //        return null;
     }
-
+*/
     public Usuario findByCpf(String cpf) {
         return repository.findByCpf(cpf);
     }

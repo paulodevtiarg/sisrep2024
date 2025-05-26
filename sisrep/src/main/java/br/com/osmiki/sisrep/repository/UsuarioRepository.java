@@ -20,6 +20,6 @@ public interface UsuarioRepository  extends JpaRepository<Usuario, Integer>, Jpa
     
     Usuario findByNome(String nome);
 
-    public Optional<Usuario> findByCpfAndSenha(String cpf, String senha);
+    public Usuario findByCpfAndSenha(String cpf, String senha);
     
 }

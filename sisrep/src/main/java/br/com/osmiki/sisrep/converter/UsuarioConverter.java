@@ -31,6 +31,8 @@ public class  UsuarioConverter {
 	        dto.setGerenteFornecedor(usuario.getGerenteFornecedor());
 	        dto.setCliente(usuario.getCliente());
 	        dto.setDataAlteracaoSenha(usuario.getDataAlteracaoSenha());
+	        dto.setNivel(usuario.getNivel());
+	        dto.setTipoacesso(usuario.getTipoacesso());
 	        return dto;
 	    }
 	    
@@ -50,6 +52,8 @@ public class  UsuarioConverter {
 	        usuario.setGerenteFornecedor(usuarioDTO.getGerenteFornecedor());
 	        usuario.setCliente(usuarioDTO.getCliente());
 	        usuario.setDataAlteracaoSenha(usuarioDTO.getDataAlteracaoSenha());
+	        usuario.setNivel(usuarioDTO.getNivel());
+	        usuario.setTipoacesso(usuarioDTO.getTipoacesso());
 	        return usuario;
 	    	
 	    	

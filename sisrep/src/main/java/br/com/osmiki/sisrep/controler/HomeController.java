@@ -5,10 +5,14 @@
  */
 package br.com.osmiki.sisrep.controler;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
+import br.com.osmiki.sisrep.model.TipoAcesso;
+import br.com.osmiki.sisrep.service.EmpresaService;
+import br.com.osmiki.sisrep.sessao.UsuarioSessao;
+import org.springframework.ui.Model;
 
 /**
  *
@@ -16,23 +20,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class HomeController {
-    /***
-	 * ESSE MÉTODO CARREGA A PÁGINA(index.html) DE LOGIN DA NOSSA APLICAÇÃO
-	 * @return
-	 */
-	@GetMapping("/")	
-	public String index(){	
-        System.out.print("INDEX AQUI");
-	    return "index";
-	}
- 
-	/***
-	 * CARREGA À PÁGINA INICIAL DA APLICAÇÃO APÓS EFETUARMOS O LOGIN 
-	 * @return
-	 */
-	@GetMapping("/home")	
-	public String home(){
-        System.out.println("CHEGOU NA HOME");
-		return "home";
-	}
+	/**
+     * Carrega a página de login (index.html)
+     */
+    @GetMapping("/")
+    public String index() {
+        return "index";
+    }
+
+    /**
+     * Carrega a página inicial após login
+     */
+    @GetMapping("/home")
+    public String home() {
+        return "home";
+    }
 }

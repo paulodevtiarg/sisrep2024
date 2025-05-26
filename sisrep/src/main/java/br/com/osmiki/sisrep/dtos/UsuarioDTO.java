@@ -2,6 +2,8 @@ package br.com.osmiki.sisrep.dtos;
 
 import java.time.LocalDateTime;
 
+import br.com.osmiki.sisrep.model.Nivel;
+import br.com.osmiki.sisrep.model.TipoAcesso;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -9,69 +11,88 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class UsuarioDTO {
 		
 	
-	@Column(name = "id_pessoa")
-    private Integer idPessoa;
 	
-    @Basic(optional = false)
+    private Integer idPessoa;
+	    
     @NotNull
     @NotBlank(message = "Nome obrigatório")
-    @Column(name = "nome")
-    private String nome;
-    
-    @Basic(optional = false)
+    private String nome;    
+   
     @NotNull
     @NotBlank(message = "CPF Obrigatório")
-    @Column(name = "cpf")
     private String cpf;
     
-    @Basic(optional = false)
+  
     @NotNull
     @NotBlank(message = "Senha Obrigatória")
-    @Column(name = "senha")
     private String senha;
-    @Basic(optional = false)
+   
     @NotNull
     @Column(name = "inativo")
     private boolean inativo;
-    @Basic(optional = false)
+    
+    
     @NotNull
     @Column(name = "proximo_numero_assistencia")
     private int proximoNumeroAssistencia;
-    @Basic(optional = false)
+       
     @NotNull
     @Column(name = "proximo_numero_inadimplencia_cliente")
     private int proximoNumeroInadimplenciaCliente;
-    @Column(name = "data_alteracao")
+       
     private LocalDateTime dataAlteracao;
-    @Basic(optional = false)
+ 
     @NotNull
-    @Column(name = "proximo_numero_contas_pagar")
     private int proximoNumeroContasPagar;
     
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
+    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 50)
     @NotNull
     @NotBlank(message = "E-Mail Obrigatório")
-    @Column(name = "email")
     private String email;
+    
     @Size(max = 20)
-    @Column(name = "email_senha")
     private String emailSenha;
-    @Column(name = "gerente_fornecedor")
+    
+    
     private Boolean gerenteFornecedor;
-    @Column(name = "cliente")
+    
+  
     private Boolean cliente;
-    @Column(name = "data_alteracao_senha")
+    
     private LocalDateTime dataAlteracaoSenha;
     
+    private Nivel nivel; // Você precisaria criar NivelDTO
     
+    private Integer id_empresa;
     
-    public Integer getIdPessoa() {
+    private TipoAcesso tipoacesso;
+    
+    public TipoAcesso getTipoacesso() {
+		return tipoacesso;
+	}
+	public void setTipoacesso(TipoAcesso tipoacesso) {
+		this.tipoacesso = tipoacesso;
+	}
+	public Nivel getNivel() {
+		return nivel;
+	}
+	public void setNivel(Nivel nivel) {
+		this.nivel = nivel;
+	}
+	public int getId_empresa() {
+		return id_empresa;
+	}
+	public void setId_empresa(Integer id_empresa) {
+		this.id_empresa = id_empresa;
+	}
+	public Integer getIdPessoa() {
 		return idPessoa;
 	}
 	public void setIdPessoa(Integer idPessoa) {
