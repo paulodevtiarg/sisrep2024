@@ -53,30 +53,27 @@ and open the template in the editor.
 				class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
 				role="button" data-bs-toggle="dropdown" aria-expanded="false"><i
 					class="fa-duotone fs-5 fa-solid fa-user"></i></a>
-				<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li class="dropdown-header text-center">
-                <div th:if="${usuarioSession != null and usuarioSession.isLogado()}">
-                    <div class="fw-bold" th:text="${usuarioSession.getUsuarioLogado().nome}"></div>
-                    <small class="text-muted">
-                        <span th:if="${usuarioSession.getUsuarioLogado().tipoacesso.name() == 'INDIVIDUAL'}">
-                            Acesso Individual
-                        </span>
-                        <span th:if="${usuarioSession.getUsuarioLogado().tipoacesso.name() == 'EMPRESARIAL'}">
-                            Empresa: <span th:text="${nomeEmpresa} ?: 'Não vinculado'"></span>
-                        </span>
-                    </small>
-                </div>
-            </li>
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="#!">Configurações</a></li>
-            <li><a class="dropdown-item" href="#!">Logs Ativos</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" th:href="@{/logout}">Sair</a></li>
-        </ul>
-				
-				
-				
-				</li>
+				<ul class="dropdown-menu dropdown-menu-end"
+					aria-labelledby="navbarDropdown">
+					<li class="dropdown-header text-center">
+						<div
+							th:if="${usuarioSession != null and usuarioSession.isLogado()}">
+							<div class="fw-bold"
+								th:text="${usuarioSession.getUsuarioLogado().nome}"></div>
+							<small class="text-muted"> 
+							<span th:if="${usuarioSession.getUsuarioLogado().tipoacesso.name() == 'MASTER'}">Acesso Master </span> 
+						    <span th:if="${usuarioSession.getUsuarioLogado().tipoacesso.name() == 'INDIVIDUAL'}">Acesso Individual </span> 
+							<span th:if="${usuarioSession.getUsuarioLogado().tipoacesso.name() == 'EMPRESARIAL'}">Empresa: <span th:text="${nomeEmpresa} ?: 'Não vinculado'"></span>
+							</span>
+							</small>
+						</div>
+					</li>
+					<li><hr class="dropdown-divider" /></li>
+					<li><a class="dropdown-item" href="#!">Configurações</a></li>
+					<li><a class="dropdown-item" href="#!">Logs Ativos</a></li>
+					<li><hr class="dropdown-divider" /></li>
+					<li><a class="dropdown-item" th:href="@{/logout}">Sair</a></li>
+				</ul></li>
 		</ul>
 	</nav>
 	<!--<header class="navbar navbar-dark bg-dark p-0 flex-nowrap fixed-top shadow"  th:fragment = "navbar">
@@ -117,19 +114,19 @@ and open the template in the editor.
 						<div class="collapse" id="collapseCadastro"
 							aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
-								<a class="nav-link" href="#">Produto</a> <a class="nav-link"
-									th:href="@{/clientes}">Cliente</a> <a class="nav-link"
-									th:href="@{/fornecedores}">Representada</a> <a class="nav-link"
-									th:href="@{/vendedores}">Vendedor</a> <a class="nav-link"
-									th:href="@{/transportadoras}">Transportadora</a> <a
-									class="nav-link" th:href="@{/usuarios}">Usuário</a> <a
-									class="nav-link" th:href="@{/tabelaprecos}">Tabela de Preço</a>
+							    <a class="nav-link" th:href="@{/empresas}" th:if="${usuarioSession.getUsuarioLogado().tipoacesso.name() == 'MASTER'}">Empresa</a> 
+								<a class="nav-link" href="#">Produto</a> 
+								<a class="nav-link"	th:href="@{/clientes}">Cliente</a> 
+								<a class="nav-link"	th:href="@{/fornecedores}">Representada</a> 
+								<a class="nav-link"	th:href="@{/vendedores}">Vendedor</a> 
+								<a class="nav-link"	th:href="@{/transportadoras}">Transportadora</a>
+								<a class="nav-link" th:href="@{/usuarios}">Usuário</a> 
+								<a class="nav-link" th:href="@{/tabelaprecos}">Tabela de Preço</a>
 								<div class="sb-sidenav-menu-heading">________________________</div>
-								<a class="nav-link" href="#">Conta Bancária</a> <a
-									class="nav-link" href="#">Despesa</a> <a class="nav-link"
-									href="#">Meta</a> <a class="nav-link" href="#">Hotel</a> <a
-									class="nav-link" href="layout-sidenav-light.html">Light
-									Sidenav</a>
+								<a class="nav-link" href="#">Conta Bancária</a> 
+								<a class="nav-link" href="#">Despesa</a> 
+								<a class="nav-link"	href="#">Meta</a> <a class="nav-link" href="#">Hotel</a>
+								<a class="nav-link" href="layout-sidenav-light.html">Light	Sidenav</a>
 							</nav>
 						</div>
 						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
@@ -252,6 +249,16 @@ and open the template in the editor.
 			$(document).ready(function() {
 				$('#cpf').mask('000.000.000-00');
 			});
+		</script>
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			$(document).ready(function() {
+				// Fecha após 5 segundos
+				setTimeout(function() {
+					$('.alert').alert('close');
+				}, 5000);
+			});
+			/*]]>*/
 		</script>
 	</div>
 </body>

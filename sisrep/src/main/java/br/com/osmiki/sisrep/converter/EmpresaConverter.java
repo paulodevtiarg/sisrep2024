@@ -3,7 +3,9 @@ package br.com.osmiki.sisrep.converter;
 import java.util.List;
 import java.util.stream.Collectors;
 import br.com.osmiki.sisrep.dtos.EmpresaDTO;
+import br.com.osmiki.sisrep.dtos.UsuarioDTO;
 import br.com.osmiki.sisrep.model.Empresa;
+import br.com.osmiki.sisrep.model.Usuario;
 
 public class EmpresaConverter {
 	 private EmpresaConverter() {} // Construtor privado para evitar instanciação
@@ -59,6 +61,8 @@ public class EmpresaConverter {
 	                      .map(EmpresaConverter::toDTO)
 	                      .collect(Collectors.toList());
 	    }
+	    
+	 
 
 
 }

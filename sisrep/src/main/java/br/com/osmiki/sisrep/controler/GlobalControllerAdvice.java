@@ -23,7 +23,20 @@ public class GlobalControllerAdvice {
         if (usuarioSessao.isLogado()) {
             model.addAttribute("usuarioSession", usuarioSessao);
             
-            if (usuarioSessao.getUsuarioLogado().getTipoacesso() == TipoAcesso.EMPRESARIAL) {
+         // Verifica se é acesso empresarial
+            boolean isEmpresarial = usuarioSessao.getUsuarioLogado().getTipoacesso() == TipoAcesso.EMPRESARIAL;
+            
+            model.addAttribute("isEmpresarial", isEmpresarial);
+            
+         // Verifica se é ADM (ID_NIVEL = 1)
+            boolean isAdm = usuarioSessao.getUsuarioLogado().getNivel().equals(1);
+            model.addAttribute("isAdm", isAdm);
+            
+         // Verifica se é empresarial E ADM
+            boolean isEmpresarialAdm = isEmpresarial && isAdm;
+            model.addAttribute("isEmpresarialAdm", isEmpresarialAdm);
+            
+            if (isEmpresarial) {
                 String nomeEmpresa = empresaService.getNomeEmpresa(
                     usuarioSessao.getUsuarioLogado().getId_empresa()
                 );

@@ -27,4 +27,7 @@ public class UsuarioSessao {
     public boolean isAdmin() {
         return isLogado() && "ADMINISTRATIVO".equalsIgnoreCase(usuarioLogado.getNivel().getNivel());
     }
+    
+    
+
 }

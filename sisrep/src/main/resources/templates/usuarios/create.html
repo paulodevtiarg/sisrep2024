@@ -33,6 +33,11 @@ and open the template in the editor.
 						<form class="needs-validation" novalidate action="#"
 							th:action="@{/usuarios}" th:object="${usuario}" method="post">
 							<input type="hidden" name="_inativo" value="on" />
+							 <!-- Campos hidden para id_empresa e tipoAcesso -->
+							  <input type="hidden" th:field="*{id_empresa}" th:unless="${forceNoEmpresa}" />
+							   <input type="hidden" th:field="*{tipoacesso}" th:value="${usuario.tipoacesso?.name()}"/>
+							   <input type="hidden" th:field="*{nivel.id}" />  <!-- Campo ESSENCIAL -->
+							
 							<div class="card">
 								<div
 									class="card-header card-header d-flex justify-content-between align-items-center fs-4 pr-custom-text  fw-semibold text-uppercase">

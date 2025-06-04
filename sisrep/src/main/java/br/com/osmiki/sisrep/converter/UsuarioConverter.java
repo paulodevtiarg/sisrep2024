@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.hibernate.query.Page;
 
 import br.com.osmiki.sisrep.dtos.UsuarioDTO;
+import br.com.osmiki.sisrep.model.TipoAcesso;
 import br.com.osmiki.sisrep.model.Usuario;
 
 public class  UsuarioConverter {
@@ -53,7 +54,17 @@ public class  UsuarioConverter {
 	        usuario.setCliente(usuarioDTO.getCliente());
 	        usuario.setDataAlteracaoSenha(usuarioDTO.getDataAlteracaoSenha());
 	        usuario.setNivel(usuarioDTO.getNivel());
-	        usuario.setTipoacesso(usuarioDTO.getTipoacesso());
+	        usuario.setId_empresa(usuarioDTO.getId_empresa());
+	     // Garanta a conversão correta do Enum
+	        if (usuarioDTO.getTipoacesso() != null) {
+	            try {
+	                // Isso garante que o valor seja convertido corretamente para o Enum
+	                usuario.setTipoacesso(TipoAcesso.valueOf(usuarioDTO.getTipoacesso().name()));
+	            } catch (IllegalArgumentException e) {
+	                // Trate valores inválidos conforme necessário
+	                usuario.setTipoacesso(null); // ou um valor padrão
+	            }
+	        }
 	        return usuario;
 	    	
 	    	

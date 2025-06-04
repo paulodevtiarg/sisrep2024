@@ -81,7 +81,7 @@ public class Usuario implements Serializable {
 	private Nivel nivel;
 	
 	
-	@Column(name="id_empresa")
+	@Column(name = "id_empresa", nullable = true) // Permite null para MASTER
 	private Integer id_empresa;
 	
 	
@@ -100,9 +100,9 @@ public class Usuario implements Serializable {
 		this.tipoacesso = tipoacesso;
 	}
 
-	public int getId_empresa() {
-		return id_empresa;
-	}
+	 public Integer getId_empresa() {
+	        return this.id_empresa; // Pode retornar null
+	    }
 
 	public void setId_empresa(Integer id_empresa) {
 		this.id_empresa = id_empresa;

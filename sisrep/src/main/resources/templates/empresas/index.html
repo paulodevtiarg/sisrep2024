@@ -19,10 +19,10 @@ and open the template in the editor.
 						<div class="col-12">
 							<nav aria-label="breadcrumb">
 								<ol class="breadcrumb">
-									<li class="breadcrumb-item"><a th:href="@{/home}"><i
-											class="fa-duotone fa-solid fa-house"></i> Dashboard</a></li>
-									<li class="breadcrumb-item active"><i
-										class="fa-duotone fa-solid fa-user"></i> Usuários</li>
+									<li class="breadcrumb-item"><a th:href="@{/home}">
+									<i  class="fa-duotone fa-solid fa-house"></i> Dashboard</a></li>
+									<li class="breadcrumb-item active">
+									<i class="fa-duotone fa-solid fa-building"></i> Empresas</li>
 								</ol>
 							</nav>
 						</div>
@@ -52,12 +52,12 @@ and open the template in the editor.
 							<div class="card">
 								<div
 									class="card-header card-header d-flex justify-content-between align-items-center fs-4 pr-custom-text  fw-semibold text-uppercase">
-									Usuários
+									Empresas
 									<!-- <a th:href="@{/usuarios/usuario}"
 										class="btn btn-outline-primary"> <i
 										class="fa-duotone fa-solid fa-plus"></i> Novo
 									</a> -->
-									<a th:href="@{/usuarios/usuario}" th:if="${isAdmin or isMaster }"
+									<a th:href="@{/empresas/empresa}" th:if="${isAdmin or isMaster }"
 										class="btn btn-outline-primary"> <i
 										class="fa-duotone fa-solid fa-plus"></i> Novo
 									</a>
@@ -70,10 +70,10 @@ and open the template in the editor.
 									<div class="row">
 										<div class="col-12">
 											<!-- Fomr de busca -->
-											<form th:action="@{/usuarios}" method="get"
+											<form th:action="@{/empresas}" method="get"
 												class="row g-3 align-items-center">
 												<!-- Campo de busca por nome -->
-												<div class="col-md-4">
+												<div class="col-md-6">
 													<label class="form-label">Busca por Nome</label>
 													<div class="input-group mb-3">
 
@@ -87,10 +87,10 @@ and open the template in the editor.
 													</div>
 												</div>
 												<div class="col-md-4">
-													<label class="form-label">Busca por E-mail</label>
+													<label class="form-label">Busca por CNPJ</label>
 													<div class="input-group mb-3">
 														<input type="text" class="form-control"
-															th:value="${email}" name="email">
+															th:value="${cnpj}" name="cnpj">
 														<button class="btn  btn-outline-primary input-group-text"
 															type="submit">
 															<i class="fa-duotone fa-regular fa-magnifying-glass"></i>
@@ -98,20 +98,6 @@ and open the template in the editor.
 
 													</div>
 												</div>
-
-												<div class="col-md-2">
-													<label class="form-label">Status</label>
-													<div class="input-group mb-3">
-														<select class="form-select " name="ativo"
-															onchange="this.form.submit()">
-															<option value="">Todos status</option>
-															<option th:value="true" th:selected="${ativo == true}">Ativos</option>
-															<option th:value="false" th:selected="${ativo == false}">Inativos</option>
-														</select>
-													</div>
-
-												</div>
-
 
 												<div class="col-md-2">
 													<label class="form-label">Itens por página</label>
@@ -142,47 +128,43 @@ and open the template in the editor.
 														<tr class="fs-6 pr-custom-text">
 															<th class="text-center pr-th-borda-suave align-middle">
 																<a
-																th:href="@{/usuarios(size=${pageSize}, page=0, sortField=idPessoa, sortDirection=${sortField == 'idPessoa' ? reverseSortDir : 'asc'})}">
-																	ID <span th:if="${sortField == 'idPessoa'}"> <i
+																th:href="@{/empresas(size=${pageSize}, page=0, sortField=idEmpresa, sortDirection=${sortField == 'idEmpresa' ? reverseSortDir : 'asc'})}">
+																	ID <span th:if="${sortField == 'idEmpresa'}"> <i
 																		th:class="${sortDirection == 'asc' ? 'fa-solid fa-arrow-up' : 'fa-solid fa-arrow-down'}"></i>
 																</span>
 															</a>
 															</th>
 															<th class="text-center pr-th-borda-suave align-middle">Nome</th>
-															<th class="text-center pr-th-borda-suave align-middle">E-mail</th>
-															<th class="text-center pr-th-borda-suave align-middle">Status</th>
+															<th class="text-center pr-th-borda-suave align-middle">Cnpj</th>
+															<th class="text-center pr-th-borda-suave align-middle">Cidade</th>
+															<th class="text-center pr-th-borda-suave align-middle">Estado</th>
 															<th class="text-center align-middle">Ações</th>
 														</tr>
 													</thead>
 													<tbody>
-														<tr th:each="usuario : ${usuarios}">
+														<tr th:each="empresa : ${empresas}">
 															<td class="align-middle text-center"
-																th:text="${usuario.idPessoa}"></td>
-															<td class="align-middle" th:text="${usuario.nome}"></td>
-															<td class="align-middle" th:text="${usuario.email}"></td>
-															<td class="text-center align-middle"><span
-																th:if="${!usuario.inativo}"
-																class="badge fs-6 text-center bg-success"> <i
-																	class="fa-duotone fs-6 fa-solid fa-check"></i> Ativo
-															</span> <span th:if="${usuario.inativo}"
-																class="badge text-center fs-6 bg-secondary"><i
-																	class="fa-duotone fs-6 fa-solid fa-circle-xmark"></i>
-																	Inativo</span></td>
+																th:text="${empresa.id}"></td>
+															<td class="align-middle" th:text="${empresa.nome}"></td>
+															<td class="align-middle" th:text="${empresa.cnpj}"></td>
+															<td class="align-middle" th:text="${empresa.municipio.nome}"></td>
+														    <td class="align-middle text-center" th:text="${empresa.municipio.estado.uf}"></td>
+														
 															<!-- Ações na tabela -->
 															<td class="align-middle text-center">
 																<!-- Editar (para admin da empresa ou master) -->
 																<a
-																th:href="@{/usuarios/editar/{id}(id=${usuario.idPessoa})}"
+																th:href="@{/empresas/editar/{id}(id=${empresa.id})}"
 																th:if="${isAdmin or isMaster}"
 																class="btn btn-sm btn-outline-primary border-0"> <i
 																	class="fas fa-edit"></i>
 															</a>
 															 <!-- Detalhes (todos podem ver) --> <a
-																th:href="@{/usuarios/detalhar/{id}(id=${usuario.idPessoa})}"
+																th:href="@{/empresa/detalhar/{id}(id=${empresa.id})}"
 																class="btn btn-sm btn-outline-secondary border-0"> <i
 																	class="fa-duotone fa-regular fa-square-info"></i>
 															</a> <!-- Excluir (só para admin) --> <a
-																th:href="@{/usuarios/excluir/{id}(id=${usuario.idPessoa})}"
+																th:href="@{/empreas/excluir/{id}(id=${empresa.id})}"
 																th:if="${isAdmin or isMaster}"
 																class="btn btn-sm btn-outline-danger border-0"
 																onclick="return confirm('Tem certeza que deseja excluir?')">
@@ -221,7 +203,7 @@ and open the template in the editor.
 											<li class="page-item"
 												th:classappend="${currentPage == 0} ? 'disabled'"><a
 												class="page-link"
-												th:href="@{/usuarios(size=${pageSize}, page=0, sortField=${sortField}, sortDirection=${sortDirection}, nome=${nome}, email=${email}, ativo=${ativo})}">
+												th:href="@{/empresas(size=${pageSize}, page=0, sortField=${sortField}, sortDirection=${sortDirection}, nome=${nome}, cnpj=${cnpj})}">
 													<i class="fa-duotone fa-angles-left"></i>
 											</a></li>
 
@@ -229,7 +211,7 @@ and open the template in the editor.
 											<li class="page-item"
 												th:classappend="${currentPage == 0} ? 'disabled'"><a
 												class="page-link"
-												th:href="@{/usuarios(size=${pageSize}, page=${currentPage - 1}, nome=${nome}, email=${email}, ativo=${ativo})}">
+												th:href="@{/empresas(size=${pageSize}, page=0, sortField=${sortField}, sortDirection=${sortDirection}, nome=${nome}, cnpj=${cnpj})}">
 													<i class="fa-duotone fa-angle-left"></i>
 											</a></li>
 
@@ -238,14 +220,14 @@ and open the template in the editor.
 												class="page-item"
 												th:classappend="${i == currentPage} ? 'active'"><a
 												class="page-link"
-												th:href="@{/usuarios(size=${pageSize}, page=${i}, nome=${nome}, email=${email}, ativo=${ativo})}"
+												th:href="@{/empresas(size=${pageSize}, page=0, sortField=${sortField}, sortDirection=${sortDirection}, nome=${nome}, cnpj=${cnpj})}"
 												th:text="${i + 1}"></a></li>
 
 											<!-- Próxima página -->
 											<li class="page-item"
 												th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
 												<a class="page-link"
-												th:href="@{/usuarios(size=${pageSize}, page=${currentPage + 1}, nome=${nome}, email=${email}, ativo=${ativo})}">
+												th:href="@{/empresas(size=${pageSize}, page=0, sortField=${sortField}, sortDirection=${sortDirection}, nome=${nome}, cnpj=${cnpj})}">
 													<i class="fa-duotone fa-angle-right"></i>
 											</a>
 											</li>
@@ -254,7 +236,7 @@ and open the template in the editor.
 											<li class="page-item"
 												th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
 												<a class="page-link"
-												th:href="@{/usuarios(size=${pageSize}, page=${totalPages - 1}, nome=${nome}, email=${email}, ativo=${ativo})}">
+												th:href="@{/empresas(size=${pageSize}, page=0, sortField=${sortField}, sortDirection=${sortDirection}, nome=${nome}, cnpj=${cnpj})}">
 													<i class="fa-duotone fa-angles-right"></i>
 											</a>
 											</li>

@@ -86,7 +86,7 @@ public class UsuarioDTO {
 	public void setNivel(Nivel nivel) {
 		this.nivel = nivel;
 	}
-	public int getId_empresa() {
+	public Integer getId_empresa() {
 		return id_empresa;
 	}
 	public void setId_empresa(Integer id_empresa) {

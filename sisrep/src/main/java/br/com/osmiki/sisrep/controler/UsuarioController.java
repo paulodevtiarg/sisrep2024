@@ -6,9 +6,15 @@
 package br.com.osmiki.sisrep.controler;
 
 import br.com.osmiki.sisrep.converter.UsuarioConverter;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.com.osmiki.sisrep.dtos.UsuarioDTO;
+import br.com.osmiki.sisrep.model.Nivel;
+import br.com.osmiki.sisrep.model.TipoAcesso;
 import br.com.osmiki.sisrep.model.Usuario;
+import br.com.osmiki.sisrep.service.NivelService;
 import br.com.osmiki.sisrep.service.UsuarioService;
+import br.com.osmiki.sisrep.sessao.UsuarioSessao;
+import br.com.osmiki.sisrep.utils.AcessoUtils;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -38,12 +44,14 @@ public class UsuarioController {
   
 	    @Autowired
 	    private UsuarioService usuarioService;
-    /*
-    @GetMapping
-    public String findAll(Model model){
-        model.addAttribute("usuarios", service.findAll());
-        return "usuarios/index";
-    }*/
+	    
+	    @Autowired
+	    private UsuarioSessao usuarioSessao;
+	    
+	    
+	    @Autowired
+	    private NivelService nivelService;
+
 	    
 	    @GetMapping
 	    public String listUsuarios(
@@ -57,11 +65,19 @@ public class UsuarioController {
 	            @RequestParam(defaultValue = "asc") String sortDirection,
 	            Model model) {
 	        
-	       
-			Page<UsuarioDTO> pageResult = usuarioService.findPaginated(
-	            page, size, idPessoa, nome, email, ativo, sortField, sortDirection);
+	    	 Usuario usuarioLogado = usuarioSessao.getUsuarioLogado();
+	    	 
+	    	 boolean isAdmin = usuarioLogado.getNivel().getId() == 1;
+	    	// Obtém dados do usuário logado
+	        Integer idEmpresa = usuarioSessao.getUsuarioLogado().getId_empresa();
+	        Integer nivel = usuarioSessao.getUsuarioLogado().getNivel().getId();
+	        
+	        Page<UsuarioDTO> pageResult = usuarioService.findPaginated(
+	                page, size, idEmpresa, nivel,usuarioLogado.getTipoacesso(), idPessoa, nome, email, ativo, sortField, sortDirection);
 	        
 	        model.addAttribute("usuarios", pageResult.getContent());
+	        model.addAttribute("isAdmin", nivel == 1); // Se é administrador
+	        model.addAttribute("isMaster", usuarioLogado.getTipoacesso() == TipoAcesso.MASTER);
 	        model.addAttribute("currentPage", page);
 	        model.addAttribute("pageSize", size);
 	        model.addAttribute("totalPages", pageResult.getTotalPages());
@@ -76,23 +92,36 @@ public class UsuarioController {
 	        
 	        return "usuarios/index";
 	    }
-	 // Rota alternativa para obter todos sem paginação (se necessário)
-	 //   @GetMapping("/todos")
-	//    @ResponseBody
-	//    public List<UsuarioDTO> listAllUsuarios() {
-	//        return usuarioService.findAll();
-	//    }
+	 
    
     @GetMapping("/usuario")
     public String showForm(Model model){
         UsuarioDTO usuario = new UsuarioDTO();
-        model.addAttribute("usuario", usuario); // Note o nome explícito "usuario"
+        
+        //vai verificar se o usuario logado é um EMPRESARIAL e se é ADMIN
+        //se for vai atribuir o valor EMPRESARIAL ao atributo do novo usuário
+        //e atribuir o nivel 2, pois esse nao é admin
+        if (!AcessoUtils.isEmpresarialAdm(usuarioSessao)) {
+        	//pega a empresa do usuario e adiciona ao novo usuário
+            usuario.setId_empresa(usuarioSessao.getUsuarioLogado().getId_empresa());
+            usuario.setTipoacesso(TipoAcesso.EMPRESARIAL);
+            // Busca direta 
+            Nivel nivelComum = nivelService.findById(2); // Nível 2 = usuário comum
+                      
+            usuario.setNivel(nivelComum);
+            model.addAttribute("usuario", usuario); // Note o nome explícito "usuario"
+        }else{
+        	  model.addAttribute("msgErro", "USUÁRIO SEM PERMISSÃO PARA ADICIONAR NOVOS USUÁRIOS À EMPRESA");
+        	  return "usuarios/index";
+        }
+        
+       
         return "usuarios/create";
     } 
     
     //Criando um novo usuario (POST /usuarios)
     @PostMapping
-    public String addUser(@Valid @ModelAttribute("usuario") UsuarioDTO usuarioDTO, BindingResult result, Model model) {
+    public String addUser(@Valid @ModelAttribute("usuario") UsuarioDTO usuarioDTO, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             String msgErro = "";
             for (ObjectError error : result.getAllErrors()) {
@@ -106,10 +135,25 @@ public class UsuarioController {
         	 // Converter DTO para Entity usando o conversor estático
             Usuario usuario = UsuarioConverter.toEntity(usuarioDTO);
             
-            // Salvar o usuário convertido
-            usuarioService.create(usuario);
-            
-            model.addAttribute("msgOk", "Usuário registrado com sucesso!");
+            // Salvar o usuário convertido com tratamento de erro
+            try {
+                usuarioService.create(usuario);
+                redirectAttributes.addFlashAttribute("msgOk", "Usuário registrado com sucesso!");
+                
+                return "redirect:/usuarios?page=0&size=10&sortField=nome&sortDirection=asc";
+            } catch (Exception e) {
+                // Log do erro completo
+                e.printStackTrace();
+                
+                // Mensagem amigável para o usuário
+                String msgErro = "Erro ao salvar usuário: " + e.getMessage();
+                if (e.getCause() != null) {
+                    msgErro += " - Causa: " + e.getCause().getMessage();
+                }
+                
+                model.addAttribute("msgErro", msgErro);
+                return "usuarios/create";
+            }
             
             
                        
@@ -120,7 +164,7 @@ public class UsuarioController {
         }
       //model.addAttribute("usuarios", usuarioService.findAll());
      // Redireciona para a listagem com parâmetros padrão
-        return "redirect:/usuarios?page=0&size=10&sortField=nome&sortDirection=asc";
+   //     return "redirect:/usuarios?page=0&size=10&sortField=nome&sortDirection=asc";
     }
     
     @GetMapping("/usuario/{id}")
