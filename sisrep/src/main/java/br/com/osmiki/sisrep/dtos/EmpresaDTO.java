@@ -1,7 +1,7 @@
 package br.com.osmiki.sisrep.dtos;
 
-import br.com.osmiki.sisrep.model.Municipio;
 
+import jakarta.validation.constraints.Email;
 
 public class EmpresaDTO {
 	
@@ -23,7 +23,7 @@ public class EmpresaDTO {
     private String bairro;
     
     
-    private Municipio municipio;
+    private MunicipioDTO municipio;
     
     
     private String cep;
@@ -34,7 +34,7 @@ public class EmpresaDTO {
    
     private String telefone_celular;
     
-    
+    @Email(message = "Email inválido")
     private String email;
     
     
@@ -121,13 +121,13 @@ public class EmpresaDTO {
 
 
 
-	public Municipio getMunicipio() {
+	public MunicipioDTO getMunicipio() {
 		return municipio;
 	}
 
 
 
-	public void setMunicipio(Municipio municipio) {
+	public void setMunicipio(MunicipioDTO municipio) {
 		this.municipio = municipio;
 	}
 

@@ -13,6 +13,8 @@ import br.com.osmiki.sisrep.model.Nivel;
 
 public class NivelConverter {
 	private NivelConverter() {}
+	
+	
 	public static NivelDTO toDTO(Nivel nivel) {
 		if(nivel == null) {
 			return null;

@@ -12,4 +12,12 @@ public class AcessoUtils {
         return usuarioSessao.getUsuarioLogado().getTipoacesso() == TipoAcesso.EMPRESARIAL 
                && usuarioSessao.getUsuarioLogado().getNivel().equals(1);
     }
+    
+    public static boolean isUserMaster(UsuarioSessao usuarioSessao) {
+        if (usuarioSessao == null || !usuarioSessao.isLogado()) {
+            return false;
+        }
+        return usuarioSessao.getUsuarioLogado().getTipoacesso() == TipoAcesso.MASTER 
+               && usuarioSessao.getUsuarioLogado().getNivel().equals(1);
+    }
 }

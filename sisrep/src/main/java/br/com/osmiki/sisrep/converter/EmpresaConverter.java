@@ -22,7 +22,7 @@ public class EmpresaConverter {
 		 dto.setLogradouro(empresa.getLogradouro());
 		 dto.setComplemento(empresa.getComplemento());
 		 dto.setBairro(empresa.getBairro());
-		 dto.setMunicipio(empresa.getMunicipio());
+		 dto.setMunicipio(MunicipioConverter.toDTO(empresa.getMunicipio()));
 		 dto.setCep(empresa.getCep());
 		 dto.setTelefone_fixo(empresa.getTelefone_fixo());
 		 dto.setTelefone_celular(empresa.getTelefone_celular());
@@ -43,7 +43,7 @@ public class EmpresaConverter {
 		 empresa.setLogradouro(empresaDTO.getLogradouro());
 		 empresa.setComplemento(empresaDTO.getComplemento());
 		 empresa.setBairro(empresaDTO.getBairro());
-		 empresa.setMunicipio(empresaDTO.getMunicipio());
+		 empresa.setMunicipio(MunicipioConverter.toEntity(empresaDTO.getMunicipio()));
 		 empresa.setCep(empresaDTO.getCep());
 		 empresa.setTelefone_fixo(empresaDTO.getTelefone_fixo());
 		 empresa.setTelefone_celular(empresaDTO.getTelefone_celular());

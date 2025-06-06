@@ -17,7 +17,7 @@ and open the template in the editor.
 				<div class="container-fluid p-2">
 					<div class="row">
 						<div class="col-12">
-							<nav aria-label="breadcrumb">
+							<nav aria-label="breadcrumb card">
 								<ol class="breadcrumb">
 									<li class="breadcrumb-item"><a th:href="@{/home}">
 									<i  class="fa-duotone fa-solid fa-house"></i> Dashboard</a></li>
@@ -90,7 +90,8 @@ and open the template in the editor.
 													<label class="form-label">Busca por CNPJ</label>
 													<div class="input-group mb-3">
 														<input type="text" class="form-control"
-															th:value="${cnpj}" name="cnpj">
+															th:value="${cnpj}" name="cnpj" placeholder="00.000.000/0000-00"
+													data-mask="00.000.000/0000-00" autocomplete="off">
 														<button class="btn  btn-outline-primary input-group-text"
 															type="submit">
 															<i class="fa-duotone fa-regular fa-magnifying-glass"></i>

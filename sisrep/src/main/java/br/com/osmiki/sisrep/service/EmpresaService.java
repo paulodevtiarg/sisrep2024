@@ -1,4 +1,5 @@
 package br.com.osmiki.sisrep.service;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,11 +11,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import br.com.osmiki.sisrep.dtos.EmpresaDTO;
 import br.com.osmiki.sisrep.converter.EmpresaConverter;
 import br.com.osmiki.sisrep.converter.UsuarioConverter;
 import br.com.osmiki.sisrep.model.Empresa;
 import br.com.osmiki.sisrep.model.TipoAcesso;
+import br.com.osmiki.sisrep.model.Usuario;
 import br.com.osmiki.sisrep.repository.EmpresaRepository;
 
 @Service
@@ -80,4 +84,9 @@ public class EmpresaService {
                 .map(Empresa::getNome)
                 .orElse("Empresa não encontrada");
     }
+    
+    public Empresa create(@RequestBody Empresa empresa) {
+		
+		return empresaRepository.save(empresa);
+	}
 }

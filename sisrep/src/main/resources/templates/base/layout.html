@@ -85,6 +85,7 @@ and open the template in the editor.
         </header>-->
 
 	<div id="layoutSidenav" th:fragment="menu">
+	
 		<div id="layoutSidenav_nav">
 			<nav class="sb-sidenav accordion sb-sidenav-dark"
 				id="sidenavAccordion">
@@ -260,6 +261,17 @@ and open the template in the editor.
 			});
 			/*]]>*/
 		</script>
+		<script>
+		
+		document.getElementById('email').addEventListener('input', function() {
+		    this.setCustomValidity('');
+		    if (!this.validity.valid) {
+		        this.setCustomValidity('Por favor, insira um email válido');
+		    }
+		});
+		</script>
+		
+		
 	</div>
 </body>
 </html>

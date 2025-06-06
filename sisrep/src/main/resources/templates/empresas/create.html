@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base/layout :: comum-header"></head>
+<body class="sb-nav-fixed">
+	<header th:replace="base/layout :: navbar"></header>
+
+	<div id="layoutSidenav">
+		<nav th:replace="base/layout :: menu"></nav>
+
+		<div id="layoutSidenav_content">
+			<main>
+				<div class="container-fluid p-2">
+					<div class="row">
+						<div class="col-12">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a th:href="@{/home}"><i
+											class="fa-duotone fa-solid fa-house"></i> Dashboard</a></li>
+									<li class="breadcrumb-item"><a th:href="@{/usuarios}">
+											<i class="fa-duotone fa-solid fa-user"></i> Usuários
+									</a></li>
+									<li class="breadcrumb-item active">Nova Empresa</li>
+								</ol>
+							</nav>
+						</div>
+
+						<div class="col-12">
+							<form class="needs-validation" novalidate action="#"
+								th:action="@{/empresas}" th:object="${empresa}" method="post">
+
+
+								<div class="card">
+									<div
+										class="card-header card-header d-flex justify-content-between align-items-center fs-4 pr-custom-text  fw-semibold text-uppercase">
+										Nova Empresa <a th:href="@{/empresas}"
+											class="btn btn-outline-secondary"> <i
+											class="fa-duotone fa-solid fa-ban"></i> Cancelar
+										</a>
+									</div>
+									<div class="card-body">
+
+										<div class="form-row">
+											<div class="form-group col-md-6">
+												<label for="nome">Razão Social*</label> <input type="text"
+													class="form-control" th:field="*{razao_social}"
+													id="razao_social" placeholder="Razão Social" required>
+												<span class="text-danger"
+													th:if="${#fields.hasErrors('razao_social')}"
+													th:errors="*{razao_social}"></span>
+											</div>
+											<div class="form-group col-md-6">
+												<label for="nome">Nome*</label> <input type="text"
+													class="form-control" th:field="*{nome}" id="nome"
+													placeholder="Nome da Empresa" required> <span
+													class="text-danger" th:if="${#fields.hasErrors('nome')}"
+													th:errors="*{nome}"></span>
+											</div>
+											<div class="form-group col-md-2">
+												<label for="text">CNPJ*</label> <input
+													pattern="\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}"
+													title="Digite um CNPJ no formato: 000.000./0000-00"
+													type="text" class="form-control" th:field="*{cnpj}"
+													id="cnpj" placeholder="00.000.000/0000-00"
+													data-mask="00.000.000/0000-00" autocomplete="off">
+												<span class="text-danger"
+													th:if="${#fields.hasErrors('cnpj')}" th:errors="*{cnpj}"></span>
+											</div>
+
+
+											<div class="form-group col-md-2">
+
+												<label for="ie">Insc. Estadual</label> <input
+													pattern="[0-9]{3}\.[0-9]{3}\.[0-9]{3}\.[0-9]{3}"
+													title="Digite a Inscrição Estadual no formato: 000.000.000.000"
+													type="text" class="form-control" th:field="*{ie}" id="ie"
+													placeholder="000.000.000.000" data-mask="000.000.000.000"
+													autocomplete="off">
+											</div>
+
+											<!-- Input para IM (Inscrição Municipal) - inicialmente escondido -->
+											<div class="form-group col-md-2">
+												<label for="im">Insc. Municipal</label> <input
+													pattern="[0-9]{3}\.[0-9]{3}\.[0-9]{3}\.[0-9]{3}"
+													title="Digite a Inscrição Municipal no formato: 000.000.000.000"
+													type="text" class="form-control" th:field="*{im}" id="im"
+													placeholder="000.000.000.000" data-mask="000.000.000.000"
+													autocomplete="off">
+											</div>
+											<div class="form-group col-md-1">
+												<label for="im">CEP</label> <input
+													pattern="\d{2}\.\d{3}\-\d{3}"
+													title="CEP no formato: 00.000-000" type="text"
+													class="form-control" th:field="*{cep}" id="cep"
+													placeholder="00.000-000" data-mask="00.000-000"
+													autocomplete="off">
+											</div>
+											<div class="form-group col-md-5">
+												<label for="im">Logradouro</label> <input type="text"
+													class="form-control" th:field="*{logradouro}"
+													id="logradouro" placeholder="Rua, Avenida, Travessa..."
+													autocomplete="off">
+											</div>
+											<div class="form-group col-md-4">
+												<label for="im">Complemento</label> <input type="text"
+													class="form-control" th:field="*{complemento}"
+													id="complemento" placeholder="Quadra, Lote, Apartamento..."
+													autocomplete="off">
+											</div>
+											<div class="form-group col-md-4">
+												<label for="im">Bairro</label> <input type="text"
+													class="form-control" th:field="*{bairro}" id="bairro"
+													placeholder="Bairro, Vila, Setor..." autocomplete="off">
+											</div>
+
+											<div class="form-group col-md-4">
+												<label for="municipio">Município*</label> 
+												
+												<select
+													class="form-control" th:field="*{municipio.idMunicipio}"
+													id="municipio">
+													<option value="">Selecione um município</option>
+													<!-- Itera sobre a lista de DTOs -->
+													<option th:each="municipio : ${municipiosDTO}"
+														th:value="${municipio.idMunicipio}"
+														th:text="${municipio.nome}"></option>
+												</select>
+											</div>
+											<div class="form-group col-md-4">
+												<label for="email">Email</label> <input type="email"
+													class="form-control" th:field="*{email}" id="email"
+													placeholder="exemplo@dominio.com"
+													pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+													title="Digite um email válido no formato: exemplo@dominio.com"
+													autocomplete="off"> <span class="text-danger"
+													th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+											</div>
+											<div class="form-group col-md-2">
+												<label for="telefone_fixo">Telefone Fixo</label> <input
+													type="text" class="form-control"
+													th:field="*{telefone_fixo}" id="telefone_fixo"
+													placeholder="(00)0000-0000" pattern="\(\d{2}\)\d{4}-\d{4}"
+													title="Digite no formato (00)0000-0000"
+													data-mask="(00)0000-0000" autocomplete="off"> <span
+													class="text-danger"
+													th:if="${#fields.hasErrors('telefone_fixo')}"
+													th:errors="*{telefone_fixo}"></span>
+											</div>
+											<div class="form-group col-md-2">
+												<label for="telefone_celular">Telefone Celular</label> <input
+													type="text" class="form-control"
+													th:field="*{telefone_celular}" id="telefone_celular"
+													placeholder="(00)00000-0000" pattern="\(\d{2}\)\d{5}-\d{4}"
+													title="Digite no formato (00)00000-0000"
+													data-mask="(00)00000-0000" autocomplete="off"> <span
+													class="text-danger"
+													th:if="${#fields.hasErrors('telefone_celular')}"
+													th:errors="*{telefone_celular}"></span>
+											</div>
+
+										</div>
+
+
+
+
+
+
+									</div>
+									<div class="col-12 border-bottom pb-3 mb-3"></div>
+									<div
+										class="card-footer d-flex justify-content-between align-items-center">
+										<button type="submit" class="btn btn-outline-primary">
+											<i class="fa-duotone fa-solid fa-floppy-disk"></i> SALVAR
+										</button>
+
+									</div>
+
+								</div>
+							</form>
+
+						</div>
+
+
+
+					</div>
+
+
+				</div>
+
+
+			</main>
+			<footer th:replace="base/layout :: footer"></footer>
+		</div>
+	</div>
+
+	<div th:replace="base/layout :: body-scripts"></div>
+
+
+</body>
+</html>

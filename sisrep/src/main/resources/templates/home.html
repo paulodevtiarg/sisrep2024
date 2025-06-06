@@ -5,65 +5,88 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="base/layout :: comum-header"></head>
-    <body class="sb-nav-fixed">
-        <header th:replace="base/layout :: navbar"></header>
-        
-        <div id="layoutSidenav">
-            <nav th:replace="base/layout :: menu"></nav>
-            
-            <div id="layoutSidenav_content">
-                <main>
-                    
-                    <div class="container-fluid">
-                        <h1 class="mt-4">Dashboard</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Dashboard</li>
-                        </ol>
-                        <div class="row">
-                            <div class="col-3">
-                                <div class="card">
-                                    <div class="card-header">
-                                        Destaque1
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">Título especial</h5>
-                                        <p class="card-text">Com suporte a texto embaixo, que funciona como uma introdução a um conteúdo adicional.</p>
-                                        <a href="#" class="btn btn-primary">Visitar</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="card">
-                                    <div class="card-header">
-                                        Destaque2
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">Título especial</h5>
-                                        <p class="card-text">Com suporte a texto embaixo, que funciona como uma introdução a um conteúdo adicional.</p>
-                                        <a href="#" class="btn btn-primary">Visitar</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="card">
-                                    <div class="card-header">
-                                        Destaque3
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">Título especial</h5>
-                                        <p class="card-text">Com suporte a texto embaixo, que funciona como uma introdução a um conteúdo adicional.</p>
-                                        <a href="#" class="btn btn-primary">Visitar</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-                <footer th:replace="base/layout :: footer"></footer>
-            </div>           
-        </div>
-        
-        <div th:replace="base/layout :: body-scripts"></div>
-    </body>
+<head th:replace="base/layout :: comum-header"></head>
+<body class="sb-nav-fixed">
+	<header th:replace="base/layout :: navbar"></header>
+
+	<div id="layoutSidenav">
+		<nav th:replace="base/layout :: menu"></nav>
+
+		<div id="layoutSidenav_content">
+			<main>
+				<div class="container-fluid p2">
+					<div class="row">
+						<div class="col-12">
+							<nav aria-label="breadcrumb card">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item active"><a th:href="@{/home}">
+									<i	class="fa-duotone fa-solid fa-house"></i> Dashboard</a></li>
+									
+								</ol>
+							</nav>
+
+						</div>
+
+						<div class="col-12">
+							<div class="card">
+								<div
+									class="card-header card-header d-flex justify-content-between align-items-center fs-4 pr-custom-text  fw-semibold text-uppercase">
+									Dashboard</div>
+
+								<div class="card-body">
+
+									<div class="row">
+										<div class="col-3">
+											<div class="card">
+												<div class="card-header">Destaque1</div>
+												<div class="card-body">
+													<h5 class="card-title">Título especial</h5>
+													<p class="card-text">Com suporte a texto embaixo, que
+														funciona como uma introdução a um conteúdo adicional.</p>
+													<a href="#" class="btn btn-primary">Visitar</a>
+												</div>
+											</div>
+										</div>
+										<div class="col-3">
+											<div class="card">
+												<div class="card-header">Destaque2</div>
+												<div class="card-body">
+													<h5 class="card-title">Título especial</h5>
+													<p class="card-text">Com suporte a texto embaixo, que
+														funciona como uma introdução a um conteúdo adicional.</p>
+													<a href="#" class="btn btn-primary">Visitar</a>
+												</div>
+											</div>
+										</div>
+										<div class="col-3">
+											<div class="card">
+												<div class="card-header">Destaque3</div>
+												<div class="card-body">
+													<h5 class="card-title">Título especial</h5>
+													<p class="card-text">Com suporte a texto embaixo, que
+														funciona como uma introdução a um conteúdo adicional.</p>
+													<a href="#" class="btn btn-primary">Visitar</a>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+
+
+				</div>
+			</main>
+			<footer th:replace="base/layout :: footer"></footer>
+		</div>
+	</div>
+
+	<div th:replace="base/layout :: body-scripts"></div>
+</body>
 </html>
